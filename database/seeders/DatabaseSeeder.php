@@ -17,15 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::firstOrCreate([
-            'email' => 'test@example.com',
-        ], [
-            'username' => 'testuser',
-            'nis' => '1234567890',
-            'email' => 'test@example.com',
-            'role' => 'admin',
+        $this->call([
+            UserSeeder::class,
+            KategoriSeeder::class,
+            AspirasiSeeder::class,
+            AnonymousMessageSeeder::class,
         ]);
-
-        $this->call(KategoriSeeder::class);
     }
 }
