@@ -23,10 +23,13 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        static $count = 0;
+        $count++;
+        
         return [
-            'username' => 'user' . Str::random(8),
-            'nis' => rand(10000000000, 99999999999),
-            'email' => 'test' . Str::random(5) . '@example.com',
+            'username' => 'user' . $count . Str::random(5),
+            'nis' => (string)(10000000000 + $count),
+            'email' => 'user' . time() . $count . '@example.com',
             'role' => 'siswa',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
