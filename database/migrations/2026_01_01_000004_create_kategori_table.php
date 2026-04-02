@@ -11,10 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kategori', function (Blueprint $table) {
-            $table->id('id_kategori');
-            $table->string('keterangan');
-        });
+        if (!Schema::hasTable('kategori')) {
+            Schema::create('kategori', function (Blueprint $table) {
+                $table->id('id_kategori');
+                $table->string('keterangan');
+            });
+        }
+
+        // Tambahkan constraint fk ke aspirasi setelah kategori tersedia.
+        if (Schema::hasTable('aspirasi')) {
+            Schema::table('aspirasi', function (Blueprint $table) {
+                if (Schema::hasColumn('aspirasi', 'id_kategori')) {
+                    try {
+                        $table->foreign('id_kategori')->references('id_kategori')->on('kategori');
+                    } catch (\Exception $e) {
+                        // constraint mungkin sudah ada; abaikan.
+                    }
+                }
+            });
+        }
     }
 
     /**
