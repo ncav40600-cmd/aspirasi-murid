@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('aspirasi', function (Blueprint $table) {
-            if (!Schema::hasColumn('aspirasi', 'is_anonymous')) {
-                $table->boolean('is_anonymous')->default(false)->after('email_siswa');
-            }
+        Schema::create('kategori', function (Blueprint $table) {
+            $table->id('id_kategori');
+            $table->string('keterangan');
         });
     }
 
@@ -23,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('aspirasi', function (Blueprint $table) {
-            $table->dropColumn('is_anonymous');
-        });
+        Schema::dropIfExists('kategori');
     }
 };

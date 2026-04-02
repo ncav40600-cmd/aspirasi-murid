@@ -9,8 +9,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('aspirasi', function (Blueprint $table) {
-            // Menambahkan kolom foto setelah kolom keterangan
-            $table->string('foto')->nullable()->after('keterangan'); 
+            // Menambahkan kolom foto setelah kolom keterangan jika belum ada
+            if (!Schema::hasColumn('aspirasi', 'foto')) {
+                $table->string('foto')->nullable()->after('keterangan');
+            }
         });
     }
 
