@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Aspirasi;
+use App\Models\User;
 
 class AspirasiSeeder extends Seeder
 {
@@ -15,7 +16,7 @@ class AspirasiSeeder extends Seeder
     {
         $aspirasis = [
             [
-                'user_id' => 2, // siswa1
+                'user_id' => User::where('username', 'siswa1')->first()->id,
                 'email_siswa' => 'siswa1@example.com',
                 'id_kategori' => 1, // Fasilitas
                 'keterangan' => 'Kelas perlu diperbaiki karena ada meja yang rusak.',
@@ -26,7 +27,7 @@ class AspirasiSeeder extends Seeder
                 'is_anonymous' => false,
             ],
             [
-                'user_id' => 3, // siswa2
+                'user_id' => User::where('username', 'siswa2')->first()->id,
                 'email_siswa' => 'siswa2@example.com',
                 'id_kategori' => 2, // Kurikulum
                 'keterangan' => 'Materi matematika terlalu sulit, mohon tambahkan penjelasan lebih lanjut.',
@@ -37,7 +38,7 @@ class AspirasiSeeder extends Seeder
                 'is_anonymous' => false,
             ],
             [
-                'user_id' => 4, // siswa3
+                'user_id' => User::where('username', 'siswa3')->first()->id,
                 'email_siswa' => 'siswa3@example.com',
                 'id_kategori' => 3, // Ekstrakurikuler
                 'keterangan' => 'Perlu tambah kegiatan olahraga setelah sekolah.',
@@ -48,7 +49,7 @@ class AspirasiSeeder extends Seeder
                 'is_anonymous' => true,
             ],
             [
-                'user_id' => 2, // siswa1
+                'user_id' => User::where('username', 'siswa1')->first()->id,
                 'email_siswa' => 'siswa1@example.com',
                 'id_kategori' => 4, // Lainnya
                 'keterangan' => 'Kantin sekolah perlu lebih bersih.',
