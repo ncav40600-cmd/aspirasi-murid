@@ -14,7 +14,7 @@ class User extends Authenticatable
     public $timestamps = true;
 
     protected $fillable = [
-        'full_name', 'username', 'password', 'nis', 'kelas', 'role', 'email'
+        'username', 'password', 'nis', 'kelas', 'role', 'email', 'full_name'
     ];
 
     // Relasi: User punya banyak aspirasi

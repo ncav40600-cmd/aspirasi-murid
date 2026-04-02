@@ -31,7 +31,7 @@ class AspirasiSeeder extends Seeder
                 'id_kategori' => 2, // Kurikulum
                 'keterangan' => 'Materi matematika terlalu sulit, mohon tambahkan penjelasan lebih lanjut.',
                 'foto' => null,
-                'lokasi' => null,
+                'lokasi' => 'Ruang Kelas',
                 'status' => 'in_progress',
                 'umpan_balik' => 'Sedang ditinjau oleh tim kurikulum.',
                 'is_anonymous' => false,
