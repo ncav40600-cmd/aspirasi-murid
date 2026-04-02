@@ -21,7 +21,7 @@ class KategoriSeeder extends Seeder
         ];
 
         foreach ($kategoris as $kategori) {
-            Kategori::create($kategori);
+            Kategori::updateOrCreate(['keterangan' => $kategori['keterangan']], $kategori);
         }
     }
 }

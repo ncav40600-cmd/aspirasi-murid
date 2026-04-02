@@ -62,7 +62,7 @@ class AspirasiSeeder extends Seeder
         ];
 
         foreach ($aspirasis as $aspirasi) {
-            Aspirasi::create($aspirasi);
+            Aspirasi::updateOrCreate(['keterangan' => $aspirasi['keterangan']], $aspirasi);
         }
     }
 }
