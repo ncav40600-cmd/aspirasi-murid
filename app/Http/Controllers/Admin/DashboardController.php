@@ -36,7 +36,7 @@ class DashboardController extends Controller
             if($kategoriStats->isEmpty()){
                 $kategoriLabels = ['Belum ada data'];
                 $kategoriValues = [0];
-            } else {
+            }else{
                 $kategoriLabels = $kategoriStats->pluck('nama_kategori')->toArray();
                 $kategoriValues = $kategoriStats->pluck('total')->toArray();
             }
@@ -64,14 +64,14 @@ class DashboardController extends Controller
             ->get();
 
         $aspirasi_terbaru->transform(function ($item) {
-            if (!empty($item->is_anonymous)) {
+            if ($item->is_anonymous) {
                 $item->display_name = 'Anonim';
                 $item->display_nis = '-';
                 $item->display_email = 'Anonim';
             } else {
                 $item->display_name = $item->full_name ?: ($item->username ?? 'Pengirim');
                 $item->display_nis = $item->nis ?: '-';
-                $item->display_email = $item->email_siswa ?: '-';
+                $item->display_email = $item->email_siswa ?: ($item->full_name ?: ($item->username ?? ''));
             }
             return $item;
         });
@@ -122,13 +122,13 @@ class DashboardController extends Controller
         $aspirasi = $query->orderBy('aspirasi.id_aspirasi','desc')->get();
 
         $aspirasi->transform(function ($item) {
-            if (!empty($item->is_anonymous)) {
+            if ($item->is_anonymous) {
                 $item->display_name = 'Anonim';
                 $item->display_email = 'Anonim';
                 $item->display_nis = '-';
             } else {
-                $item->display_name = $item->full_name ?? 'Pengirim';
-                $item->display_email = $item->email_siswa ?? '-';
+                $item->display_name = $item->full_name ?? 'Anonim';
+                $item->display_email = $item->email_siswa ?? 'Anonim';
                 $item->display_nis = $item->nis ?? '-';
             }
             return $item;
@@ -157,14 +157,14 @@ class DashboardController extends Controller
             return back()->with('error','Aspirasi tidak ditemukan');
         }
 
-        if (!empty($aspirasi->is_anonymous)) {
+        if ($aspirasi->is_anonymous) {
             $aspirasi->display_name = 'Anonim';
             $aspirasi->display_email = 'Anonim';
             $aspirasi->display_nis = '-';
         } else {
-            $aspirasi->display_name = $aspirasi->full_name ?? 'Pengirim';
-            $aspirasi->display_email = $aspirasi->email_siswa ?? $aspirasi->user_email ?? '-';
-            $aspirasi->display_nis = $aspirasi->nis ?? '-';
+            $aspirasi->display_name = $aspirasi->full_name;
+            $aspirasi->display_email = $aspirasi->email_siswa ?? $aspirasi->user_email;
+            $aspirasi->display_nis = $aspirasi->nis;
         }
 
         return view('admin.show', compact('aspirasi'));
@@ -186,7 +186,7 @@ class DashboardController extends Controller
         $aspirasi->save();
 
         try {
-            if (!empty($aspirasi->email_siswa)) {
+            if ($aspirasi->email_siswa) {
                 $detail = $this->getDetailAspirasi($id);
                 if ($detail) {
                     Mail::to($aspirasi->email_siswa)
@@ -213,7 +213,7 @@ class DashboardController extends Controller
 
         try {
             $detail = $this->getDetailAspirasi($id);
-            if ($detail && !empty($detail->email_siswa)) {
+            if ($detail && $detail->email_siswa) {
                 Mail::to($detail->email_siswa)
                     ->send(new AspirasiSelesaiNotification($detail,$request->umpan_balik));
             }
@@ -237,7 +237,7 @@ class DashboardController extends Controller
 
         try {
             $detail = $this->getDetailAspirasi($id);
-            if ($detail && !empty($detail->email_siswa)) {
+            if ($detail && $detail->email_siswa) {
                 Mail::to($detail->email_siswa)
                     ->send(new AspirasiDitolakNotification($detail,$request->tolak_alasan));
             }
